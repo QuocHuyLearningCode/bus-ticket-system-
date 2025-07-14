@@ -25,6 +25,22 @@ Dự án này xây dựng một website đặt vé xe khách trực tuyến cho 
 - **Security**: JWT Token, phân quyền người dùng
 - **Quản lý dự án**: maven, npm
 
+## Đặc điểm của API
+
+- **Tuân theo nguyên tắc REST**  
+  Thiết kế rõ ràng, dễ mở rộng và không lưu trạng thái (**stateless communication**)
+
+- **Phản hồi định dạng JSON**  
+  Tất cả dữ liệu phản hồi từ server đều ở dạng JSON để dễ dàng thao tác ở frontend
+
+- **Hỗ trợ CORS**  
+  Cho phép frontend và backend giao tiếp dù ở trên các domain khác nhau
+
+- **Bảo mật với JWT & Spring Security**  
+  - Xác thực người dùng thông qua **JWT (JSON Web Token)**
+  - Phân quyền truy cập thông qua **Spring Security**
+  - Bảo vệ API khỏi truy cập trái phép
+ 
 ## Logo công nghệ
  | Java (Spring Boot) | Spring Security | React | MySQL |
  |--------------------|-----------------|--------------|-------|
@@ -45,15 +61,50 @@ Dự án này xây dựng một website đặt vé xe khách trực tuyến cho 
    ```
 
 2. **Cài đặt**:
-   - Frontend: dự án chạy trên [localhost:](http://localhost:5173/)
+   - Frontend: dự án chạy trên [localhost:5173](http://localhost:5173/)
      ```bash
      cd frontend
      npm install
      npm run dev
      
      ```
-   - Backend: [localhost:](http://localhost:8080/)
+   - Backend: [localhost:8080](http://localhost:8080/)
      ```bash
      cd backend
      down pom.xml
      
+## Kiến trúc hệ thống
+
+                        +------------------------+
+                        |    User (Customer)     |
+                        +------------------------+
+                                   |
+                          HTTP/HTTPS (REST API)
+                                   v
+                        +------------------------+
+                        |     React Frontend     |
+                        | - UI/UX                |
+                        | - Axios                |
+                        +------------------------+
+                                   |
+                          RESTful API (JSON)
+                                   v
+                +------------------------------------------+
+                |       Spring Boot 3 Backend (API)        |
+                |------------------------------------------|
+                | - Controller (REST APIs)                 |
+                | - Service (Business logic)               |
+                | - Repository (Spring Data JPA)           |
+                | - Security: JWT + Spring Security        |
+                | - Payment Integration: VNPay, MoMo       |
+                +------------------------------------------+
+                                   |
+                          JPA + Hibernate ORM
+                                   |
+                             JDBC / SQL
+                                   v
+                          +---------------------+
+                          |     MySQL DB        |
+                          | Tables: User, Bus,  |
+                          | Trip, Ticket, etc.  |
+                          +---------------------+
